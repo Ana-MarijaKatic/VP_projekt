@@ -1,0 +1,722 @@
+[
+ {
+   "year": 2016,
+   "Month": 1,
+   "Hours_watched": 480241904,
+   "Avg_viewers": 646355,
+   "Peak_viewers": 1275257,
+   "Streams": 7701675,
+   "Avg_channels": 20076,
+   "Games_streamed": "12,149"
+ },
+ {
+   "year": 2016,
+   "Month": 2,
+   "Hours_watched": 441859897,
+   "Avg_viewers": 635769,
+   "Peak_viewers": 1308032,
+   "Streams": 7038520,
+   "Avg_channels": 20427,
+   "Games_streamed": "12,134"
+ },
+ {
+   "year": 2016,
+   "Month": 3,
+   "Hours_watched": 490669308,
+   "Avg_viewers": 660389,
+   "Peak_viewers": 1591551,
+   "Streams": 7390957,
+   "Avg_channels": 20271,
+   "Games_streamed": "12,234"
+ },
+ {
+   "year": 2016,
+   "Month": 4,
+   "Hours_watched": 377975447,
+   "Avg_viewers": 525696,
+   "Peak_viewers": 1775120,
+   "Streams": 6869719,
+   "Avg_channels": 16791,
+   "Games_streamed": "12,282"
+ },
+ {
+   "year": 2016,
+   "Month": 5,
+   "Hours_watched": 449836631,
+   "Avg_viewers": 605432,
+   "Peak_viewers": 1438962,
+   "Streams": 7535519,
+   "Avg_channels": 19394,
+   "Games_streamed": "12,424"
+ },
+ {
+   "year": 2016,
+   "Month": 6,
+   "Hours_watched": 446429345,
+   "Avg_viewers": 620903,
+   "Peak_viewers": 1755888,
+   "Streams": 6663363,
+   "Avg_channels": 18818,
+   "Games_streamed": "12,374"
+ },
+ {
+   "year": 2016,
+   "Month": 7,
+   "Hours_watched": 446331825,
+   "Avg_viewers": 600715,
+   "Peak_viewers": 1453743,
+   "Streams": 7336215,
+   "Avg_channels": 18030,
+   "Games_streamed": "12,961"
+ },
+ {
+   "year": 2016,
+   "Month": 8,
+   "Hours_watched": 382117373,
+   "Avg_viewers": 514289,
+   "Peak_viewers": 1334490,
+   "Streams": 6837386,
+   "Avg_channels": 16592,
+   "Games_streamed": "13,693"
+ },
+ {
+   "year": 2016,
+   "Month": 9,
+   "Hours_watched": 362833210,
+   "Avg_viewers": 504635,
+   "Peak_viewers": 1186009,
+   "Streams": 6623528,
+   "Avg_channels": 16880,
+   "Games_streamed": "13,484"
+ },
+ {
+   "year": 2016,
+   "Month": 10,
+   "Hours_watched": 453035001,
+   "Avg_viewers": 609737,
+   "Peak_viewers": 1549150,
+   "Streams": 6771852,
+   "Avg_channels": 19250,
+   "Games_streamed": "13,973"
+ },
+ {
+   "year": 2016,
+   "Month": 11,
+   "Hours_watched": 449688428,
+   "Avg_viewers": 625435,
+   "Peak_viewers": 1410023,
+   "Streams": 6084871,
+   "Avg_channels": 20715,
+   "Games_streamed": "13,968"
+ },
+ {
+   "year": 2016,
+   "Month": 12,
+   "Hours_watched": 490484523,
+   "Avg_viewers": 660140,
+   "Peak_viewers": 1385864,
+   "Streams": 7848796,
+   "Avg_channels": 22291,
+   "Games_streamed": "14,033"
+ },
+ {
+   "year": 2017,
+   "Month": 1,
+   "Hours_watched": 601251200,
+   "Avg_viewers": 809220,
+   "Peak_viewers": 2284184,
+   "Streams": 8672879,
+   "Avg_channels": 24081,
+   "Games_streamed": "14,841"
+ },
+ {
+   "year": 2017,
+   "Month": 2,
+   "Hours_watched": 500932308,
+   "Avg_viewers": 746545,
+   "Peak_viewers": 1524883,
+   "Streams": 7166517,
+   "Avg_channels": 24219,
+   "Games_streamed": "14,737"
+ },
+ {
+   "year": 2017,
+   "Month": 3,
+   "Hours_watched": 516399977,
+   "Avg_viewers": 695020,
+   "Peak_viewers": 1500730,
+   "Streams": 5970626,
+   "Avg_channels": 23094,
+   "Games_streamed": "14,794"
+ },
+ {
+   "year": 2017,
+   "Month": 4,
+   "Hours_watched": 535431301,
+   "Avg_viewers": 744688,
+   "Peak_viewers": 1823848,
+   "Streams": 5507554,
+   "Avg_channels": 22078,
+   "Games_streamed": "15,007"
+ },
+ {
+   "year": 2017,
+   "Month": 5,
+   "Hours_watched": 506927522,
+   "Avg_viewers": 682271,
+   "Peak_viewers": 1514023,
+   "Streams": 8019065,
+   "Avg_channels": 22362,
+   "Games_streamed": "15,276"
+ },
+ {
+   "year": 2017,
+   "Month": 6,
+   "Hours_watched": 510832330,
+   "Avg_viewers": 710476,
+   "Peak_viewers": 1935516,
+   "Streams": 8053586,
+   "Avg_channels": 23412,
+   "Games_streamed": "15,393"
+ },
+ {
+   "year": 2017,
+   "Month": 7,
+   "Hours_watched": 566899230,
+   "Avg_viewers": 762986,
+   "Peak_viewers": 1802287,
+   "Streams": 8802016,
+   "Avg_channels": 25810,
+   "Games_streamed": "15,962"
+ },
+ {
+   "year": 2017,
+   "Month": 8,
+   "Hours_watched": 533450366,
+   "Avg_viewers": 717968,
+   "Peak_viewers": 1824303,
+   "Streams": 8358509,
+   "Avg_channels": 24711,
+   "Games_streamed": "15,898"
+ },
+ {
+   "year": 2017,
+   "Month": 9,
+   "Hours_watched": 527591318,
+   "Avg_viewers": 733784,
+   "Peak_viewers": 1519456,
+   "Streams": 7844109,
+   "Avg_channels": 25038,
+   "Games_streamed": "15,804"
+ },
+ {
+   "year": 2017,
+   "Month": 10,
+   "Hours_watched": 585177534,
+   "Avg_viewers": 787587,
+   "Peak_viewers": 1835725,
+   "Streams": 8479007,
+   "Avg_channels": 25723,
+   "Games_streamed": "15,847"
+ },
+ {
+   "year": 2017,
+   "Month": 11,
+   "Hours_watched": 575551503,
+   "Avg_viewers": 800488,
+   "Peak_viewers": 1532756,
+   "Streams": 8526330,
+   "Avg_channels": 26768,
+   "Games_streamed": "16,532"
+ },
+ {
+   "year": 2017,
+   "Month": 12,
+   "Hours_watched": 573137507,
+   "Avg_viewers": 771382,
+   "Peak_viewers": 1496306,
+   "Streams": 9288649,
+   "Avg_channels": 28181,
+   "Games_streamed": "16,871"
+ },
+ {
+   "year": 2018,
+   "Month": 1,
+   "Hours_watched": 720220030,
+   "Avg_viewers": 969340,
+   "Peak_viewers": 2315343,
+   "Streams": 11222734,
+   "Avg_channels": 33580,
+   "Games_streamed": "18,309"
+ },
+ {
+   "year": 2018,
+   "Month": 2,
+   "Hours_watched": 615710441,
+   "Avg_viewers": 917601,
+   "Peak_viewers": 1735587,
+   "Streams": 10729066,
+   "Avg_channels": 35548,
+   "Games_streamed": "18,667"
+ },
+ {
+   "year": 2018,
+   "Month": 3,
+   "Hours_watched": 721341613,
+   "Avg_viewers": 970850,
+   "Peak_viewers": 2399946,
+   "Streams": 13495972,
+   "Avg_channels": 38981,
+   "Games_streamed": "19,274"
+ },
+ {
+   "year": 2018,
+   "Month": 4,
+   "Hours_watched": 729326135,
+   "Avg_viewers": 1014361,
+   "Peak_viewers": 2009005,
+   "Streams": 13101238,
+   "Avg_channels": 39491,
+   "Games_streamed": "19,132"
+ },
+ {
+   "year": 2018,
+   "Month": 5,
+   "Hours_watched": 762177378,
+   "Avg_viewers": 1025810,
+   "Peak_viewers": 1714327,
+   "Streams": 13869534,
+   "Avg_channels": 38746,
+   "Games_streamed": "19,011"
+ },
+ {
+   "year": 2018,
+   "Month": 6,
+   "Hours_watched": 789065029,
+   "Avg_viewers": 1097447,
+   "Peak_viewers": 2847241,
+   "Streams": 13888432,
+   "Avg_channels": 39761,
+   "Games_streamed": "18,833"
+ },
+ {
+   "year": 2018,
+   "Month": 7,
+   "Hours_watched": 796242999,
+   "Avg_viewers": 1071659,
+   "Peak_viewers": 1974783,
+   "Streams": 14910026,
+   "Avg_channels": 41629,
+   "Games_streamed": "19,290"
+ },
+ {
+   "year": 2018,
+   "Month": 8,
+   "Hours_watched": 855860641,
+   "Avg_viewers": 1151898,
+   "Peak_viewers": 3929074,
+   "Streams": 15769306,
+   "Avg_channels": 44383,
+   "Games_streamed": "19,233"
+ },
+ {
+   "year": 2018,
+   "Month": 9,
+   "Hours_watched": 815061013,
+   "Avg_viewers": 1133603,
+   "Peak_viewers": 2431863,
+   "Streams": 15005606,
+   "Avg_channels": 44246,
+   "Games_streamed": "18,526"
+ },
+ {
+   "year": 2018,
+   "Month": 10,
+   "Hours_watched": 852724761,
+   "Avg_viewers": 1147678,
+   "Peak_viewers": 2093870,
+   "Streams": 14934884,
+   "Avg_channels": 43558,
+   "Games_streamed": "18,524"
+ },
+ {
+   "year": 2018,
+   "Month": 11,
+   "Hours_watched": 865630693,
+   "Avg_viewers": 1203936,
+   "Peak_viewers": 2515155,
+   "Streams": 14422767,
+   "Avg_channels": 45464,
+   "Games_streamed": "18,789"
+ },
+ {
+   "year": 2018,
+   "Month": 12,
+   "Hours_watched": 845969862,
+   "Avg_viewers": 1138586,
+   "Peak_viewers": 2021262,
+   "Streams": 16271867,
+   "Avg_channels": 48190,
+   "Games_streamed": "19,156"
+ },
+ {
+   "year": 2019,
+   "Month": 1,
+   "Hours_watched": 949050474,
+   "Avg_viewers": 1277322,
+   "Peak_viewers": 2278352,
+   "Streams": 17042119,
+   "Avg_channels": 55853,
+   "Games_streamed": "19,995"
+ },
+ {
+   "year": 2019,
+   "Month": 2,
+   "Hours_watched": 881506851,
+   "Avg_viewers": 1313721,
+   "Peak_viewers": 2624711,
+   "Streams": 15578420,
+   "Avg_channels": 56375,
+   "Games_streamed": "19,573"
+ },
+ {
+   "year": 2019,
+   "Month": 3,
+   "Hours_watched": 947733580,
+   "Avg_viewers": 1275549,
+   "Peak_viewers": 2630058,
+   "Streams": 16718941,
+   "Avg_channels": 55019,
+   "Games_streamed": "20,457"
+ },
+ {
+   "year": 2019,
+   "Month": 4,
+   "Hours_watched": 888326199,
+   "Avg_viewers": 1235502,
+   "Peak_viewers": 2368981,
+   "Streams": 15708616,
+   "Avg_channels": 51328,
+   "Games_streamed": "20,536"
+ },
+ {
+   "year": 2019,
+   "Month": 5,
+   "Hours_watched": 939520272,
+   "Avg_viewers": 1264495,
+   "Peak_viewers": 2607531,
+   "Streams": 15520889,
+   "Avg_channels": 48357,
+   "Games_streamed": "20,751"
+ },
+ {
+   "year": 2019,
+   "Month": 6,
+   "Hours_watched": 939126720,
+   "Avg_viewers": 1306156,
+   "Peak_viewers": 3496976,
+   "Streams": 14499225,
+   "Avg_channels": 47953,
+   "Games_streamed": "20,209"
+ },
+ {
+   "year": 2019,
+   "Month": 7,
+   "Hours_watched": 916692478,
+   "Avg_viewers": 1233771,
+   "Peak_viewers": 2933491,
+   "Streams": 14790881,
+   "Avg_channels": 48111,
+   "Games_streamed": "20,106"
+ },
+ {
+   "year": 2019,
+   "Month": 8,
+   "Hours_watched": 999177398,
+   "Avg_viewers": 1344787,
+   "Peak_viewers": 2563475,
+   "Streams": 14678509,
+   "Avg_channels": 48508,
+   "Games_streamed": "20,421"
+ },
+ {
+   "year": 2019,
+   "Month": 9,
+   "Hours_watched": 878083331,
+   "Avg_viewers": 1221256,
+   "Peak_viewers": 2817054,
+   "Streams": 13284517,
+   "Avg_channels": 46242,
+   "Games_streamed": "19,869"
+ },
+ {
+   "year": 2019,
+   "Month": 10,
+   "Hours_watched": 900334210,
+   "Avg_viewers": 1211755,
+   "Peak_viewers": 2993052,
+   "Streams": 13220814,
+   "Avg_channels": 45185,
+   "Games_streamed": "19,904"
+ },
+ {
+   "year": 2019,
+   "Month": 11,
+   "Hours_watched": 879157590,
+   "Avg_viewers": 1222750,
+   "Peak_viewers": 2906707,
+   "Streams": 12939422,
+   "Avg_channels": 45655,
+   "Games_streamed": "20,248"
+ },
+ {
+   "year": 2019,
+   "Month": 12,
+   "Hours_watched": 881497670,
+   "Avg_viewers": 1186403,
+   "Peak_viewers": 2692333,
+   "Streams": 13781104,
+   "Avg_channels": 45688,
+   "Games_streamed": "20,515"
+ },
+ {
+   "year": 2020,
+   "Month": 1,
+   "Hours_watched": 1010010231,
+   "Avg_viewers": 1359367,
+   "Peak_viewers": 2400513,
+   "Streams": 15053038,
+   "Avg_channels": 52875,
+   "Games_streamed": "21,249"
+ },
+ {
+   "year": 2020,
+   "Month": 2,
+   "Hours_watched": 981752149,
+   "Avg_viewers": 1412593,
+   "Peak_viewers": 2630587,
+   "Streams": 13455714,
+   "Avg_channels": 53882,
+   "Games_streamed": "20,748"
+ },
+ {
+   "year": 2020,
+   "Month": 3,
+   "Hours_watched": 1218370086,
+   "Avg_viewers": 1639798,
+   "Peak_viewers": 3402641,
+   "Streams": 17302441,
+   "Avg_channels": 66090,
+   "Games_streamed": "22,872"
+ },
+ {
+   "year": 2020,
+   "Month": 4,
+   "Hours_watched": 1792309113,
+   "Avg_viewers": 2492780,
+   "Peak_viewers": 4455065,
+   "Streams": 17814917,
+   "Avg_channels": 93867,
+   "Games_streamed": "24,646"
+ },
+ {
+   "year": 2020,
+   "Month": 5,
+   "Hours_watched": 1755760388,
+   "Avg_viewers": 2363069,
+   "Peak_viewers": 4043730,
+   "Streams": 20203413,
+   "Avg_channels": 100486,
+   "Games_streamed": "25,396"
+ },
+ {
+   "year": 2020,
+   "Month": 6,
+   "Hours_watched": 1629282927,
+   "Avg_viewers": 2266040,
+   "Peak_viewers": 6060464,
+   "Streams": 18160561,
+   "Avg_channels": 94052,
+   "Games_streamed": "24,780"
+ },
+ {
+   "year": 2020,
+   "Month": 7,
+   "Hours_watched": 1572595815,
+   "Avg_viewers": 2116548,
+   "Peak_viewers": 3965956,
+   "Streams": 18859473,
+   "Avg_channels": 95781,
+   "Games_streamed": "25,485"
+ },
+ {
+   "year": 2020,
+   "Month": 8,
+   "Hours_watched": 1620682345,
+   "Avg_viewers": 2181268,
+   "Peak_viewers": 3861619,
+   "Streams": 19146406,
+   "Avg_channels": 96421,
+   "Games_streamed": "25,714"
+ },
+ {
+   "year": 2020,
+   "Month": 9,
+   "Hours_watched": 1585511181,
+   "Avg_viewers": 2205161,
+   "Peak_viewers": 4816995,
+   "Streams": 18150678,
+   "Avg_channels": 91978,
+   "Games_streamed": "29,190"
+ },
+ {
+   "year": 2020,
+   "Month": 10,
+   "Hours_watched": 1774145250,
+   "Avg_viewers": 2387813,
+   "Peak_viewers": 4208725,
+   "Streams": 19774827,
+   "Avg_channels": 95170,
+   "Games_streamed": "31,922"
+ },
+ {
+   "year": 2020,
+   "Month": 11,
+   "Hours_watched": 1789235196,
+   "Avg_viewers": 2488505,
+   "Peak_viewers": 4380326,
+   "Streams": 20176665,
+   "Avg_channels": 103929,
+   "Games_streamed": "32,479"
+ },
+ {
+   "year": 2020,
+   "Month": 12,
+   "Hours_watched": 1877319317,
+   "Avg_viewers": 2526674,
+   "Peak_viewers": 4860624,
+   "Streams": 22089295,
+   "Avg_channels": 107006,
+   "Games_streamed": "32,840"
+ },
+ {
+   "year": 2021,
+   "Month": 1,
+   "Hours_watched": 2173794168,
+   "Avg_viewers": 2925698,
+   "Peak_viewers": 6516666,
+   "Streams": 25614207,
+   "Avg_channels": 119448,
+   "Games_streamed": "34,551"
+ },
+ {
+   "year": 2021,
+   "Month": 2,
+   "Hours_watched": 1979581961,
+   "Avg_viewers": 2950196,
+   "Peak_viewers": 5274617,
+   "Streams": 24319608,
+   "Avg_channels": 122763,
+   "Games_streamed": "34,594"
+ },
+ {
+   "year": 2021,
+   "Month": 3,
+   "Hours_watched": 2173794168,
+   "Avg_viewers": 2925698,
+   "Peak_viewers": 6516666,
+   "Streams": 25614207,
+   "Avg_channels": 119448,
+   "Games_streamed": "34,551"
+ },
+ {
+   "year": 2021,
+   "Month": 4,
+   "Hours_watched": 2173794168,
+   "Avg_viewers": 2925698,
+   "Peak_viewers": 6516666,
+   "Streams": 25614207,
+   "Avg_channels": 119448,
+   "Games_streamed": "34,551"
+ },
+ {
+   "year": 2021,
+   "Month": 5,
+   "Hours_watched": 2308295297,
+   "Avg_viewers": 3106723,
+   "Peak_viewers": 5835026,
+   "Streams": 22761038,
+   "Avg_channels": 110484,
+   "Games_streamed": "36,960"
+ },
+ {
+   "year": 2021,
+   "Month": 6,
+   "Hours_watched": 1963630266,
+   "Avg_viewers": 2731057,
+   "Peak_viewers": 5746730,
+   "Streams": 20285356,
+   "Avg_channels": 101892,
+   "Games_streamed": "36,099"
+ },
+ {
+   "year": 2021,
+   "Month": 7,
+   "Hours_watched": 1953900874,
+   "Avg_viewers": 2629745,
+   "Peak_viewers": 4396750,
+   "Streams": 21055358,
+   "Avg_channels": 101755,
+   "Games_streamed": "36,319"
+ },
+ {
+   "year": 2021,
+   "Month": 8,
+   "Hours_watched": 1974586275,
+   "Avg_viewers": 2657585,
+   "Peak_viewers": 4778502,
+   "Streams": 20767741,
+   "Avg_channels": 100701,
+   "Games_streamed": "36,471"
+ },
+ {
+   "year": 2021,
+   "Month": 9,
+   "Hours_watched": 1857514531,
+   "Avg_viewers": 2583469,
+   "Peak_viewers": 5599210,
+   "Streams": 18826493,
+   "Avg_channels": 95513,
+   "Games_streamed": "35,861"
+ },
+ {
+   "year": 2021,
+   "Month": 10,
+   "Hours_watched": 2020197953,
+   "Avg_viewers": 2718974,
+   "Peak_viewers": 6086487,
+   "Streams": 18209793,
+   "Avg_channels": 91858,
+   "Games_streamed": "36,406"
+ },
+ {
+   "year": 2021,
+   "Month": 11,
+   "Hours_watched": 1812117484,
+   "Avg_viewers": 2520330,
+   "Peak_viewers": 5941684,
+   "Streams": 17415525,
+   "Avg_channels": 90774,
+   "Games_streamed": "35,043"
+ },
+ {
+   "year": 2021,
+   "Month": 12,
+   "Hours_watched": 1872400661,
+   "Avg_viewers": 2520054,
+   "Peak_viewers": 5014457,
+   "Streams": 17824022,
+   "Avg_channels": 90731,
+   "Games_streamed": "35,577"
+ }
+]

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <script>
+        d3.json("Twitch_game_data.json", function(data) {
+            d3.select("body")
+                .selectAll("p")
+                .data(data)
+                .enter()
+                .append("p")
+                .text(function(d){
+                    while(d.Month==1 && d.Year==2016){
+                        return d.Game;
+                        
+                        
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
