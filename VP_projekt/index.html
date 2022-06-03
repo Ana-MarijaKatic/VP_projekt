@@ -5,16 +5,24 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <style>
+    *{
+        font-size: 12px;
+    }
+
     #tooltip {
         background-color: #ecf0f1;
         visibility: hidden;
         position: absolute;
-        opacity: 0.8;
+        opacity: 0.9;
         padding: 10px;
         vertical-align: middle;
         border-radius: 5px;
         text-align: center;
-        width: 180px;
+        width: 140px;
+        font-size: 16px;
+    }
+    .rectangle:hover{
+       opacity: 0.3; 
     }
 </style>
 
@@ -37,31 +45,41 @@
 */
 
         var globalData;
-        var monthData;
+        var yearData = [];
+        var monthData = [];
+        var hoursWatchedData = [];
+        var avgViewersData = [];
+        var peakViewersData = [];
+        var gamesStreamedData = []; 
+
         d3.json("Twitch_global_data.json", function (data) {
             globalData = data;
-            monthData = displayMonthData();
+            fetchData();
             displayData();
         })
 
-        function displayMonthData() {
-            var temp_monthData = [];
+        function fetchData() {
+            var temp_hoursWatchedData = [];
+
             globalData.forEach(function (data) {
                 if (true) {
-                    temp_monthData.push(data.Hours_watched);
+                    monthData.push(data.Month);
+                    yearData.push(data.year);
+                    hoursWatchedData.push(data.Hours_watched);
+                    avgViewersData.push(data.Avg_viewers);
+                    peakViewersData.push(data.Peak_viewers);
+                    gamesStreamedData.push(data.Games_streamed);
                 }
-
-                //console.log(data.Hours_watched);
-
             });
-            return temp_monthData;
-
         }
 
+       /* function displayYearData() {
+
+        }
+*/
 
         function displayData() {
-            console.log(monthData);
-
+            //console.log(hoursWatchedData);
 
             /*
             var data = [480241904, 441859897, 490669308, 377975447, 449836631, 446429345, 446331825, 382117373, 362833210, 453035001, 449688428, 490484523];
@@ -80,7 +98,7 @@
                 .range(["white", "blue"]);
             */
             var color = d3.scaleOrdinal()
-                .domain(monthData)
+                .domain(hoursWatchedData)
                 .range(["#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F",
                     "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B",
                     "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166",
@@ -96,12 +114,12 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             var x = d3.scaleBand()
-                .domain(d3.range(monthData.length))
+                .domain(d3.range(hoursWatchedData.length))
                 .rangeRound([0, width])
                 .paddingInner(0.05);
 
             var y = d3.scaleLinear()
-                .domain([0, d3.max(monthData)])
+                .domain([0, d3.max(hoursWatchedData)])
                 .range([height, 0]);
 
 
@@ -119,7 +137,7 @@
             var yAxis = d3.axisLeft(y)
                 .tickSize(0)
                 .tickFormat(function (d) {
-                    return d;
+                    return d/1000000;
                 });
 
             svg.append("g")
@@ -131,7 +149,7 @@
                 .attr("dy", "4em")
                 .style("text-anchor", "end")
                 .style("fill", "black")
-                .text("Mjeseci");
+                .text("Months");
 
 
             svg.append("g")
@@ -140,10 +158,10 @@
                 .append("text")
                 .attr("transform", "rotate(0)")
                 .attr("x", 75)
-                .attr("dy", "-1em")
+                .attr("dy", "-0.8em")
                 .style("text-anchor", "end")
                 .style("fill", "black")
-                .text("Milijuni sati gledanja");
+                .text("Millions of hours watched");
 
             const tooltip = d3.select("body")
                 .append("div")
@@ -152,9 +170,10 @@
 
 
             var barchart = svg.selectAll("rect")
-                .data(monthData)
+                .data(hoursWatchedData)
                 .enter()
                 .append("rect")
+                .attr("class","rectangle")
                 .attr("x", function (d, i) {
                     return x(i);
                 })
@@ -165,11 +184,11 @@
                     return color(d);
                 })
                 .attr("stroke", "white")
-                .on("mouseover", function (d) {
+                .on("mouseover", function (d,i) {
                     tooltip.style("visibility", "visible")
                         .style("left", event.pageX + 10 + "px")
-                        .style("top", event.pageY - 80 + "px")
-                        .html(d);
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Hours watched: " + d + " " + "<spam>&asymp;</spam>" + "<br> " + Math.ceil(d/1000000) + " millions" +"<br>" + "Month: " + monthData[i] + "<br>" + "Year: " + yearData[i] + ".");
                 })
                 .on("mousemove", function () {
                     tooltip.style("left", event.pageX + 10 + "px")
@@ -178,7 +197,6 @@
                     tooltip.style("visibility", "hidden")
                 });
         }
-
 
     </script>
 </body>
