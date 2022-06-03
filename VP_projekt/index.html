@@ -4,6 +4,19 @@
 <head>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
+<style>
+    #tooltip {
+        background-color: #ecf0f1;
+        visibility: hidden;
+        position: absolute;
+        opacity: 0.8;
+        padding: 10px;
+        vertical-align: middle;
+        border-radius: 5px;
+        text-align: center;
+        width: 180px;
+    }
+</style>
 
 <body>
     <script>
@@ -22,108 +35,152 @@
                 });
         });
 */
-        var data = [480241904, 441859897, 490669308, 377975447, 449836631, 446429345, 446331825, 382117373, 362833210, 453035001, 449688428, 490484523];
-        var hours_watched = [];
-        data.forEach(function (hours, index) {
-            hours_watched[index] = Math.floor(hours / 1000000);
-        });
-        console.log(hours_watched);
-        var margin = { top: 20, bottom: 70, left: 80, right: 60 }
-        var width = 600 - margin.left - margin.right;
-        var height = 300 - margin.top - margin.bottom;
 
-        var color = d3.scaleLinear()
-            .domain([0, d3.max(data)])
-            .range(["blue", "red"]);
+        var globalData;
+        var monthData;
+        d3.json("Twitch_global_data.json", function (data) {
+            globalData = data;
+            monthData = displayMonthData();
+            displayData();
+        })
 
-        var svg = d3.select("body")
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        function displayMonthData() {
+            var temp_monthData = [];
+            globalData.forEach(function (data) {
+                if (true) {
+                    temp_monthData.push(data.Hours_watched);
+                }
 
-        var x = d3.scaleBand()
-            .domain(d3.range(data.length))
-            .rangeRound([0, width])
-            .paddingInner(0.05);
+                //console.log(data.Hours_watched);
 
-        var y = d3.scaleLinear()
-            .domain([0, d3.max(data)])
-            .range([height, 0]);
-
-
-
-        var xAxis = d3.axisBottom(x)
-            .tickSize(0)
-            .tickFormat(function (d, i) {
-                return i + 1;
-            })
-        var yAxis = d3.axisLeft(y)
-            .tickSize(0)
-            .tickFormat(function (d) {
-                return d;
-            })
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + (height + 2) + ")")
-            .call(xAxis)
-            .append("text")
-            .attr("x", 250)
-            .attr("dy", "4em")
-            .style("text-anchor", "end")
-            .style("fill", "black")
-            .text("Mjeseci");
-
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform", "rotate(0)")
-            .attr("x", 75)
-            .attr("dy", "-1em")
-            .style("text-anchor", "end")
-            .style("fill", "black")
-            .text("Milijuni sati gladanja");
-
-
-        var barchart = svg.selectAll("rect")
-            .data(data)
-            .enter()
-            .append("rect")
-            .attr("x", function (d, i) {
-                return x(i);
-            })
-            .attr("y", function (d) { return y(d); })
-            .attr("width", x.bandwidth())
-            .attr("height", function (d) { return height - y(d); })
-            .attr("fill", function (d, i) {
-                return color(d);
-            })
-            .attr("stroke", "white")
-            .on("mouseenter", function (d) {
-                d3.select("div").html(d);
-            })
-            .on("mouseover", function (d) {
-                div.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                div.html(formatTime(d.date) + "<br/>" + d.close)
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
-            })
-            .on("mouseout", function (d) {
-                div.transition()
-                    .duration(500)
-                    .style("opacity", 0);
             });
+            return temp_monthData;
 
+        }
+
+
+        function displayData() {
+            console.log(monthData);
+
+
+            /*
+            var data = [480241904, 441859897, 490669308, 377975447, 449836631, 446429345, 446331825, 382117373, 362833210, 453035001, 449688428, 490484523];
+            var hours_watched = [];
+            data.forEach(function (hours, index) {
+                hours_watched[index] = Math.floor(hours / 1000000);
+            });
+            */
+            //console.log(hours_watched);
+            var margin = { top: 20, bottom: 70, left: 80, right: 60 }
+            var width = 1800 - margin.left - margin.right;
+            var height = 300 - margin.top - margin.bottom;
+
+            /*var color = d3.scaleLinear()
+                .domain([0, d3.max(monthData)])
+                .range(["white", "blue"]);
+            */
+            var color = d3.scaleOrdinal()
+                .domain(monthData)
+                .range(["#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F",
+                    "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B",
+                    "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166",
+                    "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0",
+                    "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2",
+                    "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C"]);
+
+            var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleBand()
+                .domain(d3.range(monthData.length))
+                .rangeRound([0, width])
+                .paddingInner(0.05);
+
+            var y = d3.scaleLinear()
+                .domain([0, d3.max(monthData)])
+                .range([height, 0]);
+
+
+
+            var xAxis = d3.axisBottom(x)
+                .tickSize(0)
+                .tickFormat(function (d, i) {
+                    if (i < 12) {
+                        return i + 1;
+                    }
+                    else {
+                        return i % 12 + 1;
+                    }
+                });
+            var yAxis = d3.axisLeft(y)
+                .tickSize(0)
+                .tickFormat(function (d) {
+                    return d;
+                });
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + (height + 2) + ")")
+                .call(xAxis)
+                .append("text")
+                .attr("x", width / 2)
+                .attr("dy", "4em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Mjeseci");
+
+
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(0)")
+                .attr("x", 75)
+                .attr("dy", "-1em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Milijuni sati gledanja");
+
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("id", "tooltip")
+                .style("visibility", "hidden");
+
+
+            var barchart = svg.selectAll("rect")
+                .data(monthData)
+                .enter()
+                .append("rect")
+                .attr("x", function (d, i) {
+                    return x(i);
+                })
+                .attr("y", function (d) { return y(d); })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d); })
+                .attr("fill", function (d, i) {
+                    return color(d);
+                })
+                .attr("stroke", "white")
+                .on("mouseover", function (d) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 80 + "px")
+                        .html(d);
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px")
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden")
+                });
+        }
 
 
     </script>
-    <div></div>
 </body>
 
 </html>
