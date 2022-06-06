@@ -106,8 +106,8 @@
         }
         function displayDataHoursWatched() {
 
-            var margin = { top: 20, bottom: 70, left: 80, right: 60 }
-            var width = 1520 - margin.left - margin.right;
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
             var height = 360 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
@@ -222,7 +222,7 @@
                 .on("mouseout", function () {
                     tooltip.style("visibility", "hidden")
                 })
-                .on("click", function(d,i){
+                .on("click", function (d, i) {
                     d3.select(".piechart").remove();
                     createPieChart(yearData[i], monthData[i]);
                 });
@@ -231,8 +231,8 @@
         }
 
         function displayDataAverageViewers() {
-            var margin = { top: 20, bottom: 70, left: 80, right: 60 }
-            var width = 1520 - margin.left - margin.right;
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
             var height = 360 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
@@ -349,8 +349,8 @@
         }
 
         function displayDataPeakViewers() {
-            var margin = { top: 20, bottom: 70, left: 80, right: 60 }
-            var width = 1520 - margin.left - margin.right;
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
             var height = 360 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
@@ -468,9 +468,9 @@
         }
 
         function displayDataViewers() {
-            var margin = { top: 20, bottom: 70, left: 80, right: 60 }
-            var width = 1520 - margin.left - margin.right;
-            var height = 360 - margin.top - margin.bottom;
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
+            var height = 560 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
             var formatComma = d3.format(",");
@@ -568,37 +568,81 @@
                 .attr("class", "line")
                 .attr("fill", "none")
                 .attr("stroke", "#073B4C")
-                .attr("d", valuelineLeft(peakViewersData));
+                .style("stroke-width", 2)
+                .attr("d", valuelineLeft(peakViewersData))
+                .on("mouseover", function () {
+                    linechartLeft.style("stroke-width", 4);
+                    circlesLeft.attr("r", 6);
+                })
+                .on("mouseout", function () {
+                    linechartLeft.style("stroke-width", 2);
+                    circlesLeft.attr("r", 5);
+                });
 
-            
+
             var circlesLeft = svg.selectAll("myCircles")
                 .data(peakViewersData)
                 .enter()
                 .append("circle")
                 .attr("fill", "#073B4C")
                 .attr("stroke", "none")
-                .attr("cx", function (d,i) { return x(i) })
+                .attr("cx", function (d, i) { return x(i) })
                 .attr("cy", function (d) { return yLeft(d) })
-                .attr("r", 4);
-                
+                .attr("r", 5)
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Peak Viewers: " + formatComma(d) + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px")
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden")
+                });
+
 
             var linechartRight = svg.append("path")
                 .attr("class", "line")
                 .attr("fill", "none")
                 .attr("stroke", "#EF476F")
-                .attr("d", valuelineRight(avgViewersData));
+                .style("stroke-width", 2)
+                .attr("d", valuelineRight(avgViewersData))
+                .on("mouseover", function () {
+                    linechartRight.style("stroke-width", 4);
+                    circlesRight.attr("r", 6);
+                })
+                .on("mouseout", function () {
+                    linechartRight.style("stroke-width", 2);
+                    circlesRight.attr("r", 5);
+                });
 
-            
+
             var circlesRight = svg.selectAll("myCircles")
                 .data(avgViewersData)
                 .enter()
                 .append("circle")
                 .attr("fill", "#EF476F")
                 .attr("stroke", "none")
-                .attr("cx", function (d,i) { return x(i) })
+                .attr("cx", function (d, i) { return x(i) })
                 .attr("cy", function (d) { return yRight(d) })
-                .attr("r", 4);
-            
+                .attr("r", 5)
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Average Viewers: " + formatComma(d) + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px");
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden");
+                });;
+
         }
 
         function showMonth(data) {
@@ -631,57 +675,87 @@
             return data;
         }
 
-        function createPieChart(year, month){
+        function createPieChart(year, month) {
             var color2016 = d3.scaleOrdinal()
-                .range(["#520719","#7B0B25","#A40E31","#CC123D","#EC1F4F","#EF476F","#F26F8E","#F696AD","#F9BECC","#FDE5EA"]);
-            var color2017 = [];
-            var color2018 = [];
-            var color2019 = [];
-            var color2020 = [];
-            var color2021 = [];
-            
-            console.log("pie chart")
+                .range(["#520719", "#7B0B25", "#A40E31", "#CC123D", "#EC1F4F", "#EF476F", "#F26F8E", "#F696AD", "#F9BECC", "#FDE5EA"]);
+            var color2017 = d3.scaleOrdinal()
+                .range(["#601A05", "#8F2708", "#BF340A", "#F35221", "#F56539", "#F78C6B", "#F9A389", "#FABCA9", "#FCD5C9", "#FEEEEA"]);
+            var color2018 = d3.scaleOrdinal()
+                .range(["#332400", "#664700", "#996B00", "#CC8F00", "#FFB300", "#FFC233", "#FFD166", "#FFDB87", "#FFE5A8", "#FFEFC8"]);
+            var color2019 = d3.scaleOrdinal()
+                .range(["#023D2D", "#025C44", "#037A5A", "#049971", "#05B788", "#06D6A0", "#20F9BF", "#5DFBD1", "#9AFCE2", "#D7FEF3"]);
+            var color2020 = d3.scaleOrdinal()
+                .range(["#052733", "#073B4C", "#094E65", "#0C627F", "#0E7698", "#118AB2", "#1CB6EA", "#5ACAF0", "#98DEF5", "#D6F2FB"]);
+            var color2021 = d3.scaleOrdinal()
+                .range(["#02151B", "#04212B", "#052D3B", "#073B4C", "#0A4F67", "#1190BB", "#1FB7EA", "#57C9EF", "#8FDBF5", "#C7EDFA"]);
+
             d3.json("Twitch_game_data.json", function (data) {
-                
+
                 var margin = { top: 50, bottom: 50, left: 80, right: 80 }
                 var width = 660 - margin.left - margin.right;
                 var height = 600 - margin.top - margin.bottom;
                 var outerRadius = 200;
                 var innerRadius = 0;
-                console.log("json data")
+
                 var arc = d3.arc()
                     .innerRadius(innerRadius)
                     .outerRadius(outerRadius);
 
                 var pie = d3.pie()
                     .value(function (d) {
-                        if(d.Year == year && d.Month == month && d.Rank<=10){
-                            console.log(d.Hours_watched);
+                        if (d.Year == year && d.Month == month && d.Rank <= 10) {
                             return d.Hours_watched;
                         }
                     });
                 var svg = d3.select("body")
                     .append("svg")
-                    .attr("class","piechart")
+                    .attr("class", "piechart")
                     .attr("width", width)
-                    .attr("height",height);
+                    .attr("height", height);
 
                 var pieArcs = svg.selectAll("g.pie")
                     .data(pie(data))
                     .enter()
                     .append("g")
-                    .attr("class","pie")
-                    .attr("transform", "translate(" + ((width + margin.left)/2) + ", " + ((height + margin.top)/2) + ")" );
-                    
+                    .attr("class", "pie")
+                    .attr("transform", "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
+
                 pieArcs.append("path")
-                    .attr("fill", function(d,i){
-                        return color2016(i);
+                    .attr("opacity", 1)
+                    .attr("stroke", "white")
+                    .attr("fill", function (d, i) {
+                        switch (year) {
+                            case 2016:
+                                return color2016(i);
+                                break;
+                            case 2017:
+                                return color2017(i);
+                                break;
+                            case 2018:
+                                return color2018(i);
+                                break;
+                            case 2019:
+                                return color2019(i);
+                                break;
+                            case 2020:
+                                return color2020(i);
+                                break;
+                            case 2021:
+                                return color2021(i);
+                                break;
+                        }
                     })
-                    .attr("d", arc);
+                    .attr("d", arc)
+                    .on("mouseover", function (d) {
+                        d3.select(this)
+                            .style("opacity", 0.3);
 
-                
+                    })
 
-
+                    .on("mouseout", function (d) {
+                        d3.selectAll('path')
+                            .style("opacity", 1);
+                    });
             })
         }
 
