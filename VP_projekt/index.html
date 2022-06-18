@@ -5,7 +5,12 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <style>
-    *{
+    /*
+    Koristenje i izgled tooltipa
+    Marc Wiedermann
+    URL: https://marcwie.github.io/blog/responsive-bar-chart-d3/
+    */
+    .axis {
         font-size: 12px;
     }
 
@@ -21,28 +26,16 @@
         width: 140px;
         font-size: 16px;
     }
-    .rectangle:hover{
-       opacity: 0.3; 
+
+    .rectangle:hover {
+        opacity: 0.3;
     }
 </style>
 
 <body>
+    <h2 style="text-align: center;">Twitch Watchtime</h2>
+    <div style="text-align: center;">Select option: <select id="selectButton"></select></div>
     <script>
-        /*d3.json("Twitch_game_data.json", function(data) {
-            d3.select("body")
-                .selectAll("p")
-                .data(data)
-                .enter()
-                .append("p")
-                .text(function(d){
-                    while(d.Month==1 && d.Year==2016){
-                        return d.Game;
-                        
-                        
-                    }
-                });
-        });
-*/
 
         var globalData;
         var yearData = [];
@@ -50,17 +43,57 @@
         var hoursWatchedData = [];
         var avgViewersData = [];
         var peakViewersData = [];
-        var gamesStreamedData = []; 
+        var gamesStreamedData = []; //Najgledanija kategorija top 10
 
+        /* 
+        Dropdown za izbor grafa selectButton
+        URL: https://d3-graph-gallery.com/graph/line_select.html
+        */
+        var options = ["Hours Watched", "Average Viewers", "Peak Viewers", "Peak Viewers + Average Viewers"]
+
+        d3.select("#selectButton")
+            .selectAll("myOptions")
+            .data(options)
+            .enter()
+            .append("option")
+            .text(function (d) {
+                return d;
+            })
+            .attr("value", function (d) {
+                return d;
+            });
+
+        d3.select("#selectButton")
+            .on("change", function (d) {
+                var selectedOption = d3.select(this).property("value");
+                updateData(selectedOption);
+            });
+
+        function updateData(selectedOption) {
+            if (selectedOption == options[0]) {
+                d3.selectAll("svg").remove();
+                displayDataHoursWatched();
+            }
+            else if (selectedOption == options[1]) {
+                d3.selectAll("svg").remove();
+                displayDataAverageViewers();
+            }
+            else if (selectedOption == options[2]) {
+                d3.selectAll("svg").remove();
+                displayDataPeakViewers();
+            } else {
+                d3.selectAll("svg").remove();
+                displayDataViewers();
+            }
+        }
         d3.json("Twitch_global_data.json", function (data) {
             globalData = data;
             fetchData();
-            displayData();
+            displayDataHoursWatched();
+
         })
 
         function fetchData() {
-            var temp_hoursWatchedData = [];
-
             globalData.forEach(function (data) {
                 if (true) {
                     monthData.push(data.Month);
@@ -68,44 +101,17 @@
                     hoursWatchedData.push(data.Hours_watched);
                     avgViewersData.push(data.Avg_viewers);
                     peakViewersData.push(data.Peak_viewers);
-                    gamesStreamedData.push(data.Games_streamed);
                 }
             });
         }
+        function displayDataHoursWatched() {
 
-       /* function displayYearData() {
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
+            var height = 360 - margin.top - margin.bottom;
 
-        }
-*/
-
-        function displayData() {
-            //console.log(hoursWatchedData);
-
-            /*
-            var data = [480241904, 441859897, 490669308, 377975447, 449836631, 446429345, 446331825, 382117373, 362833210, 453035001, 449688428, 490484523];
-            var hours_watched = [];
-            data.forEach(function (hours, index) {
-                hours_watched[index] = Math.floor(hours / 1000000);
-            });
-            */
-            //console.log(hours_watched);
-            var margin = { top: 20, bottom: 70, left: 80, right: 60 }
-            var width = 1800 - margin.left - margin.right;
-            var height = 300 - margin.top - margin.bottom;
-
-            /*var color = d3.scaleLinear()
-                .domain([0, d3.max(monthData)])
-                .range(["white", "blue"]);
-            */
-            var color = d3.scaleOrdinal()
-                .domain(hoursWatchedData)
-                .range(["#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F", "#EF476F",
-                    "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B", "#F78C6B",
-                    "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166", "#FFD166",
-                    "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0", "#06D6A0",
-                    "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2", "#118AB2",
-                    "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C", "#073B4C"]);
-
+            var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
+            var formatComma = d3.format(",");
             var svg = d3.select("body")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -122,7 +128,130 @@
                 .domain([0, d3.max(hoursWatchedData)])
                 .range([height, 0]);
 
+            var xAxis = d3.axisBottom(x)
+                .tickSize(0)
+                .tickFormat(function (d, i) {
+                    if (i < 12) {
+                        return i + 1;
+                    }
+                    else {
+                        return i % 12 + 1;
+                    }
+                });
+            var yAxis = d3.axisLeft(y)
+                .tickSize(0)
+                .tickFormat(function (d) {
+                    return d / 1000000;
+                });
 
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (height + 2) + ")")
+                .call(xAxis)
+                .append("text")
+                .attr("x", width / 2)
+                .attr("dy", "4em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Month");
+
+
+            svg.append("g")
+                .attr("class", "axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(0)")
+                .attr("x", 75)
+                .attr("dy", "-0.8em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Millions of hours watched");
+
+            /* Marc Wiedermann */
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("id", "tooltip")
+                .style("visibility", "hidden");
+
+
+            var barchart = svg.selectAll("rect")
+                .data(hoursWatchedData)
+                .enter()
+                .append("rect")
+                .attr("class", "rectangle")
+                .attr("x", function (d, i) {
+                    return x(i);
+                })
+                .attr("y", function (d) { return y(d); })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d); })
+                .attr("fill", function (d, i) {
+                    switch (yearData[i]) {
+                        case 2016:
+                            return colorCodes[0];
+                            break;
+                        case 2017:
+                            return colorCodes[1];
+                            break;
+                        case 2018:
+                            return colorCodes[2];
+                            break;
+                        case 2019:
+                            return colorCodes[3];
+                            break;
+                        case 2020:
+                            return colorCodes[4];
+                            break;
+                        case 2021:
+                            return colorCodes[5];
+                            break;
+                    }
+                })
+                .attr("stroke", "white")
+
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Hours watched: " + formatComma(d) + " " + "<spam>&asymp;</spam>" + "<br> " + formatComma(Math.ceil(d / 1000000)) + " millions" + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px")
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden")
+                })
+                .on("click", function (d, i) {
+                    d3.select(".piechart").remove();
+                    createPieChart(yearData[i], monthData[i]);
+                });
+
+
+        }
+
+        function displayDataAverageViewers() {
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
+            var height = 360 - margin.top - margin.bottom;
+
+            var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
+            var formatComma = d3.format(",");
+            var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleBand()
+                .domain(d3.range(avgViewersData.length))
+                .rangeRound([0, width])
+                .paddingInner(0.05);
+
+            var y = d3.scaleLinear()
+                .domain([0, d3.max(avgViewersData)])
+                .range([height, 0]);
 
             var xAxis = d3.axisBottom(x)
                 .tickSize(0)
@@ -137,11 +266,11 @@
             var yAxis = d3.axisLeft(y)
                 .tickSize(0)
                 .tickFormat(function (d) {
-                    return d/1000000;
+                    return formatComma(d);
                 });
 
             svg.append("g")
-                .attr("class", "x axis")
+                .attr("class", "axis")
                 .attr("transform", "translate(0," + (height + 2) + ")")
                 .call(xAxis)
                 .append("text")
@@ -149,31 +278,31 @@
                 .attr("dy", "4em")
                 .style("text-anchor", "end")
                 .style("fill", "black")
-                .text("Months");
+                .text("Month");
 
 
             svg.append("g")
-                .attr("class", "y axis")
+                .attr("class", "axis")
                 .call(yAxis)
                 .append("text")
                 .attr("transform", "rotate(0)")
-                .attr("x", 75)
+                .attr("x", 50)
                 .attr("dy", "-0.8em")
                 .style("text-anchor", "end")
                 .style("fill", "black")
-                .text("Millions of hours watched");
+                .text("Number of viewers");
 
+            /* Marc Wiedermann */
             const tooltip = d3.select("body")
                 .append("div")
                 .attr("id", "tooltip")
                 .style("visibility", "hidden");
 
-
             var barchart = svg.selectAll("rect")
-                .data(hoursWatchedData)
+                .data(avgViewersData)
                 .enter()
                 .append("rect")
-                .attr("class","rectangle")
+                .attr("class", "rectangle")
                 .attr("x", function (d, i) {
                     return x(i);
                 })
@@ -181,14 +310,35 @@
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d); })
                 .attr("fill", function (d, i) {
-                    return color(d);
+                    switch (yearData[i]) {
+                        case 2016:
+                            return colorCodes[0];
+                            break;
+                        case 2017:
+                            return colorCodes[1];
+                            break;
+                        case 2018:
+                            return colorCodes[2];
+                            break;
+                        case 2019:
+                            return colorCodes[3];
+                            break;
+                        case 2020:
+                            return colorCodes[4];
+                            break;
+                        case 2021:
+                            return colorCodes[5];
+                            break;
+                    }
                 })
                 .attr("stroke", "white")
-                .on("mouseover", function (d,i) {
+
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
                     tooltip.style("visibility", "visible")
                         .style("left", event.pageX + 10 + "px")
                         .style("top", event.pageY - 100 + "px")
-                        .html("Hours watched: " + d + " " + "<spam>&asymp;</spam>" + "<br> " + Math.ceil(d/1000000) + " millions" +"<br>" + "Month: " + monthData[i] + "<br>" + "Year: " + yearData[i] + ".");
+                        .html("Average Viewers: " + formatComma(d) + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
                 })
                 .on("mousemove", function () {
                     tooltip.style("left", event.pageX + 10 + "px")
@@ -196,6 +346,417 @@
                 .on("mouseout", function () {
                     tooltip.style("visibility", "hidden")
                 });
+        }
+
+        function displayDataPeakViewers() {
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
+            var height = 360 - margin.top - margin.bottom;
+
+            var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
+            var formatComma = d3.format(",");
+            var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleBand()
+                .domain(d3.range(peakViewersData.length))
+                .rangeRound([0, width])
+                .paddingInner(0.05);
+
+            var y = d3.scaleLinear()
+                .domain([0, d3.max(peakViewersData)])
+                .range([height, 0]);
+
+            var xAxis = d3.axisBottom(x)
+                .tickSize(0)
+                .tickFormat(function (d, i) {
+                    if (i < 12) {
+                        return i + 1;
+                    }
+                    else {
+                        return i % 12 + 1;
+                    }
+                });
+            var yAxis = d3.axisLeft(y)
+                .tickSize(0)
+                .tickFormat(function (d) {
+                    return formatComma(d);
+                });
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (height + 2) + ")")
+                .call(xAxis)
+                .append("text")
+                .attr("x", width / 2)
+                .attr("dy", "4em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Month");
+
+
+            svg.append("g")
+                .attr("class", "axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(0)")
+                .attr("x", 50)
+                .attr("dy", "-0.8em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Number of viewers");
+
+            /* Marc Wiedermann */
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("id", "tooltip")
+                .style("visibility", "hidden");
+
+            var barchart = svg.selectAll("rect")
+                .data(peakViewersData)
+                .enter()
+                .append("rect")
+                .attr("class", "rectangle")
+                .attr("x", function (d, i) {
+                    return x(i);
+                })
+                .attr("y", function (d) { return y(d); })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d); })
+                .attr("fill", function (d, i) {
+                    switch (yearData[i]) {
+                        case 2016:
+                            return colorCodes[0];
+                            break;
+                        case 2017:
+                            return colorCodes[1];
+                            break;
+                        case 2018:
+                            return colorCodes[2];
+                            break;
+                        case 2019:
+                            return colorCodes[3];
+                            break;
+                        case 2020:
+                            return colorCodes[4];
+                            break;
+                        case 2021:
+                            return colorCodes[5];
+                            break;
+                    }
+                })
+                .attr("stroke", "white")
+
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Peak Viewers: " + formatComma(d) + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px")
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden")
+                });
+
+        }
+
+        function displayDataViewers() {
+            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var width = innerWidth - margin.left - margin.right;
+            var height = 560 - margin.top - margin.bottom;
+
+            var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
+            var formatComma = d3.format(",");
+            var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleBand()
+                .domain(d3.range(peakViewersData.length))
+                .rangeRound([0, width])
+                .paddingInner(0.05);
+
+            var yLeft = d3.scaleLinear()
+                .domain([0, d3.max(peakViewersData)])
+                .range([height, 0]);
+            var yRight = d3.scaleLinear()
+                .domain([0, d3.max(avgViewersData)])
+                .range([height, 0]);
+
+
+            var xAxis = d3.axisBottom(x)
+                .tickSize(0)
+                .tickFormat(function (d, i) {
+                    if (i < 12) {
+                        return i + 1;
+                    }
+                    else {
+                        return i % 12 + 1;
+                    }
+                });
+            var yAxisLeft = d3.axisLeft(yLeft)
+                .tickSize(0)
+                .tickFormat(function (d) {
+                    return formatComma(d);
+                });
+
+            var yAxisRight = d3.axisRight(yRight)
+                .tickSize(0)
+                .tickFormat(function (d) {
+                    return formatComma(d);
+                })
+                ;
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (height + 2) + ")")
+                .call(xAxis)
+                .append("text")
+                .attr("x", width / 2)
+                .attr("dy", "4em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .text("Month");
+
+
+            svg.append("g")
+                .attr("class", "axis")
+                .call(yAxisLeft)
+                .style("stroke", "#073B4C")
+                .style("stroke-width", 0.5)
+                .append("text")
+                .attr("transform", "rotate(0)")
+                .attr("x", 50)
+                .attr("dy", "-0.8em")
+                .style("text-anchor", "end")
+                .style("fill", "black")
+                .style("stroke", "none")
+                .text("Number of viewers");
+
+            svg.append("g")
+                .attr("class", "axis")
+                .call(yAxisRight)
+                .attr("transform", "translate(" + width + ",0)")
+                .style("fill", "none")
+                .style("stroke", "#EF476F")
+                .style("stroke-width", 0.5);
+            /* Marc Wiedermann */
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("id", "tooltip")
+                .style("visibility", "hidden");
+
+            var valuelineLeft = d3.line()
+                .x(function (d, i) { return x(i); })
+                .y(function (d) { return yLeft(d); });
+
+            var valuelineRight = d3.line()
+                .x(function (d, i) { return x(i) })
+                .y(function (d) { return yRight(d) });
+
+            var linechartLeft = svg.append("path")
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "#073B4C")
+                .style("stroke-width", 2)
+                .attr("d", valuelineLeft(peakViewersData))
+                .on("mouseover", function () {
+                    linechartLeft.style("stroke-width", 4);
+                    circlesLeft.attr("r", 6);
+                })
+                .on("mouseout", function () {
+                    linechartLeft.style("stroke-width", 2);
+                    circlesLeft.attr("r", 5);
+                });
+
+
+            var circlesLeft = svg.selectAll("myCircles")
+                .data(peakViewersData)
+                .enter()
+                .append("circle")
+                .attr("fill", "#073B4C")
+                .attr("stroke", "none")
+                .attr("cx", function (d, i) { return x(i) })
+                .attr("cy", function (d) { return yLeft(d) })
+                .attr("r", 5)
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Peak Viewers: " + formatComma(d) + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px")
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden")
+                });
+
+
+            var linechartRight = svg.append("path")
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "#EF476F")
+                .style("stroke-width", 2)
+                .attr("d", valuelineRight(avgViewersData))
+                .on("mouseover", function () {
+                    linechartRight.style("stroke-width", 4);
+                    circlesRight.attr("r", 6);
+                })
+                .on("mouseout", function () {
+                    linechartRight.style("stroke-width", 2);
+                    circlesRight.attr("r", 5);
+                });
+
+
+            var circlesRight = svg.selectAll("myCircles")
+                .data(avgViewersData)
+                .enter()
+                .append("circle")
+                .attr("fill", "#EF476F")
+                .attr("stroke", "none")
+                .attr("cx", function (d, i) { return x(i) })
+                .attr("cy", function (d) { return yRight(d) })
+                .attr("r", 5)
+                /* Marc Wiedermann */
+                .on("mouseover", function (d, i) {
+                    tooltip.style("visibility", "visible")
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY - 100 + "px")
+                        .html("Average Viewers: " + formatComma(d) + "<br>" + "Month: " + showMonth(monthData[i]) + "<br>" + "Year: " + yearData[i] + ".");
+                })
+                .on("mousemove", function () {
+                    tooltip.style("left", event.pageX + 10 + "px");
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden");
+                });;
+
+        }
+
+        function showMonth(data) {
+            switch (data) {
+                case 1: data = "January";
+                    break;
+                case 2: data = "February";
+                    break;
+                case 3: data = "March";
+                    break;
+                case 4: data = "April";
+                    break;
+                case 5: data = "May";
+                    break;
+                case 6: data = "June";
+                    break;
+                case 7: data = "July";
+                    break;
+                case 8: data = "August";
+                    break;
+                case 9: data = "September";
+                    break;
+                case 10: data = "October";
+                    break;
+                case 11: data = "November";
+                    break;
+                case 12: data = "December";
+                    break;
+            }
+            return data;
+        }
+
+        function createPieChart(year, month) {
+            var color2016 = d3.scaleOrdinal()
+                .range(["#520719", "#7B0B25", "#A40E31", "#CC123D", "#EC1F4F", "#EF476F", "#F26F8E", "#F696AD", "#F9BECC", "#FDE5EA"]);
+            var color2017 = d3.scaleOrdinal()
+                .range(["#601A05", "#8F2708", "#BF340A", "#F35221", "#F56539", "#F78C6B", "#F9A389", "#FABCA9", "#FCD5C9", "#FEEEEA"]);
+            var color2018 = d3.scaleOrdinal()
+                .range(["#332400", "#664700", "#996B00", "#CC8F00", "#FFB300", "#FFC233", "#FFD166", "#FFDB87", "#FFE5A8", "#FFEFC8"]);
+            var color2019 = d3.scaleOrdinal()
+                .range(["#023D2D", "#025C44", "#037A5A", "#049971", "#05B788", "#06D6A0", "#20F9BF", "#5DFBD1", "#9AFCE2", "#D7FEF3"]);
+            var color2020 = d3.scaleOrdinal()
+                .range(["#052733", "#073B4C", "#094E65", "#0C627F", "#0E7698", "#118AB2", "#1CB6EA", "#5ACAF0", "#98DEF5", "#D6F2FB"]);
+            var color2021 = d3.scaleOrdinal()
+                .range(["#02151B", "#04212B", "#052D3B", "#073B4C", "#0A4F67", "#1190BB", "#1FB7EA", "#57C9EF", "#8FDBF5", "#C7EDFA"]);
+
+            d3.json("Twitch_game_data.json", function (data) {
+
+                var margin = { top: 50, bottom: 50, left: 80, right: 80 }
+                var width = 660 - margin.left - margin.right;
+                var height = 600 - margin.top - margin.bottom;
+                var outerRadius = 200;
+                var innerRadius = 0;
+
+                var arc = d3.arc()
+                    .innerRadius(innerRadius)
+                    .outerRadius(outerRadius);
+
+                var pie = d3.pie()
+                    .value(function (d) {
+                        if (d.Year == year && d.Month == month && d.Rank <= 10) {
+                            return d.Hours_watched;
+                        }
+                    });
+                var svg = d3.select("body")
+                    .append("svg")
+                    .attr("class", "piechart")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                var pieArcs = svg.selectAll("g.pie")
+                    .data(pie(data))
+                    .enter()
+                    .append("g")
+                    .attr("class", "pie")
+                    .attr("transform", "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
+
+                pieArcs.append("path")
+                    .attr("opacity", 1)
+                    .attr("stroke", "white")
+                    .attr("fill", function (d, i) {
+                        switch (year) {
+                            case 2016:
+                                return color2016(i);
+                                break;
+                            case 2017:
+                                return color2017(i);
+                                break;
+                            case 2018:
+                                return color2018(i);
+                                break;
+                            case 2019:
+                                return color2019(i);
+                                break;
+                            case 2020:
+                                return color2020(i);
+                                break;
+                            case 2021:
+                                return color2021(i);
+                                break;
+                        }
+                    })
+                    .attr("d", arc)
+                    .on("mouseover", function (d) {
+                        d3.select(this)
+                            .style("opacity", 0.3);
+
+                    })
+
+                    .on("mouseout", function (d) {
+                        d3.selectAll('path')
+                            .style("opacity", 1);
+                    });
+            })
         }
 
     </script>
