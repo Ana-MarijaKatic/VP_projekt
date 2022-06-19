@@ -5,17 +5,37 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <style>
-    /*
-    Koristenje i izgled tooltipa
-    Marc Wiedermann
-    URL: https://marcwie.github.io/blog/responsive-bar-chart-d3/
-    */
     .axis {
         font-size: 12px;
     }
 
+    button {
+        border: none;
+        text-align: center;
+        font-size: 12px;
+        border-radius: 8px;
+        background-color: #495057;
+        color: #E9ECEF;
+        font-weight: bold;
+        padding: 16px;
+        margin: 10px 10px;
+        width: 300px;
+    }
+
+    button:hover {
+
+        background-color: #212529;
+
+    }
+
+    /*
+    Koristenje i izgled tooltipa
+    Marc Wiedermann
+    Link: https://marcwie.github.io/blog/responsive-bar-chart-d3/
+    */
+
     #tooltip {
-        background-color: #ecf0f1;
+        background-color: #ECF0F1;
         visibility: hidden;
         position: absolute;
         opacity: 0.9;
@@ -23,7 +43,19 @@
         vertical-align: middle;
         border-radius: 5px;
         text-align: center;
-        width: 140px;
+        width: 120px;
+        font-size: 16px;
+    }
+
+    #tooltipPie {
+        background-color: #ECF0F1;
+        visibility: hidden;
+        position: absolute;
+        opacity: 1;
+        vertical-align: middle;
+        border-radius: 5px;
+        text-align: center;
+        width: 200px;
         font-size: 16px;
     }
 
@@ -33,8 +65,14 @@
 </style>
 
 <body>
-    <h2 style="text-align: center;">Twitch Watchtime</h2>
-    <div style="text-align: center;">Select option: <select id="selectButton"></select></div>
+    <h2 style="text-align: center; color: #495057; margin: 10px;">Twitch Watchtime</h2>
+    <div style="text-align: center;">
+        <button onclick="updateData('Hours Watched')">HOURS WATCHED</button>
+        <button onclick="updateData('Avergae Viewers')">AVERAGE VIEWERS</button>
+        <button onclick="updateData('Peak Viewers')">PEAK VIEWERS</button>
+        <button onclick="updateData('Peak Average')">PEAK VIEWERS VS AVERAGE VIEWERS</button>
+    </div>
+
     <script>
 
         var globalData;
@@ -43,42 +81,18 @@
         var hoursWatchedData = [];
         var avgViewersData = [];
         var peakViewersData = [];
-        var gamesStreamedData = []; //Najgledanija kategorija top 10
-
-        /* 
-        Dropdown za izbor grafa selectButton
-        URL: https://d3-graph-gallery.com/graph/line_select.html
-        */
-        var options = ["Hours Watched", "Average Viewers", "Peak Viewers", "Peak Viewers + Average Viewers"]
-
-        d3.select("#selectButton")
-            .selectAll("myOptions")
-            .data(options)
-            .enter()
-            .append("option")
-            .text(function (d) {
-                return d;
-            })
-            .attr("value", function (d) {
-                return d;
-            });
-
-        d3.select("#selectButton")
-            .on("change", function (d) {
-                var selectedOption = d3.select(this).property("value");
-                updateData(selectedOption);
-            });
+        var flag = 0;
 
         function updateData(selectedOption) {
-            if (selectedOption == options[0]) {
+            if (selectedOption == "Hours Watched") {
                 d3.selectAll("svg").remove();
                 displayDataHoursWatched();
             }
-            else if (selectedOption == options[1]) {
+            else if (selectedOption == "Avergae Viewers") {
                 d3.selectAll("svg").remove();
                 displayDataAverageViewers();
             }
-            else if (selectedOption == options[2]) {
+            else if (selectedOption == "Peak Viewers") {
                 d3.selectAll("svg").remove();
                 displayDataPeakViewers();
             } else {
@@ -95,20 +109,19 @@
 
         function fetchData() {
             globalData.forEach(function (data) {
-                if (true) {
-                    monthData.push(data.Month);
-                    yearData.push(data.year);
-                    hoursWatchedData.push(data.Hours_watched);
-                    avgViewersData.push(data.Avg_viewers);
-                    peakViewersData.push(data.Peak_viewers);
-                }
+                monthData.push(data.Month);
+                yearData.push(data.year);
+                hoursWatchedData.push(data.Hours_watched);
+                avgViewersData.push(data.Avg_viewers);
+                peakViewersData.push(data.Peak_viewers);
+
             });
         }
         function displayDataHoursWatched() {
 
-            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var margin = { top: 20, bottom: 50, left: 80, right: 150 }
             var width = innerWidth - margin.left - margin.right;
-            var height = 360 - margin.top - margin.bottom;
+            var height = 340 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
             var formatComma = d3.format(",");
@@ -223,17 +236,60 @@
                     tooltip.style("visibility", "hidden")
                 })
                 .on("click", function (d, i) {
-                    d3.select(".piechart").remove();
-                    createPieChart(yearData[i], monthData[i]);
+                    if (flag == 0 || flag == 1) {
+                        createPieChart(yearData[i], monthData[i]);
+                        flag++;
+                    }
+                    else if (flag == 2) {
+                        d3.selectAll(".piechart").remove();
+                        createPieChart(yearData[i], monthData[i])
+                        flag = 1;
+                    }
                 });
 
+            /*
+            Postavljanje legende
+            ValarDohaeris
+            Link: http://jsfiddle.net/juY5E/7/
+            */
+
+            var legend = svg.append("g")
+                .attr("class", "legend");
+
+            var legendRect = legend.selectAll("rect")
+                .data(colorCodes)
+                .enter()
+                .append("rect")
+                .attr("x", width + 20)
+                .attr("width", 16)
+                .attr("height", 16)
+                .attr("y", function (d, i) {
+                    return height / 2 + 20 + i * 20;
+                })
+                .style("fill", function (d, i) {
+                    return colorCodes[i]
+                });
+
+            var legendText = legend.selectAll("text")
+                .data(colorCodes)
+                .enter()
+                .append("text")
+                .attr("x", width + 42)
+                .attr("y", function (d, i) {
+                    return height / 2 + 20 + i * 20 + 7;
+                })
+                .attr("dy", ".35em")
+                .style("text-anchor", "left")
+                .text(function (d, i) {
+                    return 2016 + i;
+                });
 
         }
 
         function displayDataAverageViewers() {
-            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var margin = { top: 20, bottom: 50, left: 80, right: 150 }
             var width = innerWidth - margin.left - margin.right;
-            var height = 360 - margin.top - margin.bottom;
+            var height = 560 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
             var formatComma = d3.format(",");
@@ -346,12 +402,46 @@
                 .on("mouseout", function () {
                     tooltip.style("visibility", "hidden")
                 });
+
+
+            /* ValarDohaeris */
+
+            var legend = svg.append("g")
+                .attr("class", "legend");
+
+            var legendRect = legend.selectAll("rect")
+                .data(colorCodes)
+                .enter()
+                .append("rect")
+                .attr("x", width + 20)
+                .attr("width", 16)
+                .attr("height", 16)
+                .attr("y", function (d, i) {
+                    return height / 2 + 130 + i * 20;
+                })
+                .style("fill", function (d, i) {
+                    return colorCodes[i]
+                });
+
+            var legendText = legend.selectAll("text")
+                .data(colorCodes)
+                .enter()
+                .append("text")
+                .attr("x", width + 42)
+                .attr("y", function (d, i) {
+                    return height / 2 + 130 + i * 20 + 7;
+                })
+                .attr("dy", ".35em")
+                .style("text-anchor", "left")
+                .text(function (d, i) {
+                    return 2016 + i;
+                });
         }
 
         function displayDataPeakViewers() {
-            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var margin = { top: 20, bottom: 50, left: 80, right: 150 }
             var width = innerWidth - margin.left - margin.right;
-            var height = 360 - margin.top - margin.bottom;
+            var height = 560 - margin.top - margin.bottom;
 
             var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
             var formatComma = d3.format(",");
@@ -465,14 +555,45 @@
                     tooltip.style("visibility", "hidden")
                 });
 
+            /* ValarDohaeris */
+            var legend = svg.append("g")
+                .attr("class", "legend");
+
+            var legendRect = legend.selectAll("rect")
+                .data(colorCodes)
+                .enter()
+                .append("rect")
+                .attr("x", width + 20)
+                .attr("width", 16)
+                .attr("height", 16)
+                .attr("y", function (d, i) {
+                    return height / 2 + 130 + i * 20;
+                })
+                .style("fill", function (d, i) {
+                    return colorCodes[i]
+                });
+
+            var legendText = legend.selectAll("text")
+                .data(colorCodes)
+                .enter()
+                .append("text")
+                .attr("x", width + 42)
+                .attr("y", function (d, i) {
+                    return height / 2 + 130 + i * 20 + 7;
+                })
+                .attr("dy", ".35em")
+                .style("text-anchor", "left")
+                .text(function (d, i) {
+                    return 2016 + i;
+                });
         }
 
         function displayDataViewers() {
-            var margin = { top: 20, bottom: 70, left: 80, right: 80 }
+            var margin = { top: 20, bottom: 70, left: 100, right: 100 }
             var width = innerWidth - margin.left - margin.right;
             var height = 560 - margin.top - margin.bottom;
 
-            var colorCodes = ["#EF476F", "#F78C6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C"];
+            var colorCodes = ["#EF476F", "#118AB2"];
             var formatComma = d3.format(",");
             var svg = d3.select("body")
                 .append("svg")
@@ -532,7 +653,7 @@
             svg.append("g")
                 .attr("class", "axis")
                 .call(yAxisLeft)
-                .style("stroke", "#073B4C")
+                .style("stroke", colorCodes[0])
                 .style("stroke-width", 0.5)
                 .append("text")
                 .attr("transform", "rotate(0)")
@@ -548,8 +669,9 @@
                 .call(yAxisRight)
                 .attr("transform", "translate(" + width + ",0)")
                 .style("fill", "none")
-                .style("stroke", "#EF476F")
+                .style("stroke", colorCodes[1])
                 .style("stroke-width", 0.5);
+
             /* Marc Wiedermann */
             const tooltip = d3.select("body")
                 .append("div")
@@ -567,16 +689,20 @@
             var linechartLeft = svg.append("path")
                 .attr("class", "line")
                 .attr("fill", "none")
-                .attr("stroke", "#073B4C")
+                .attr("stroke", colorCodes[0])
                 .style("stroke-width", 2)
                 .attr("d", valuelineLeft(peakViewersData))
                 .on("mouseover", function () {
                     linechartLeft.style("stroke-width", 4);
                     circlesLeft.attr("r", 6);
+                    linechartRight.style("opacity", 0.5);
+                    circlesRight.style("opacity", 0.5);
                 })
                 .on("mouseout", function () {
                     linechartLeft.style("stroke-width", 2);
                     circlesLeft.attr("r", 5);
+                    linechartRight.style("opacity", 1);
+                    circlesRight.style("opacity", 1);
                 });
 
 
@@ -584,13 +710,17 @@
                 .data(peakViewersData)
                 .enter()
                 .append("circle")
-                .attr("fill", "#073B4C")
+                .attr("fill", colorCodes[0])
                 .attr("stroke", "none")
                 .attr("cx", function (d, i) { return x(i) })
                 .attr("cy", function (d) { return yLeft(d) })
                 .attr("r", 5)
                 /* Marc Wiedermann */
                 .on("mouseover", function (d, i) {
+                    linechartLeft.style("stroke-width", 4);
+                    circlesLeft.attr("r", 6);
+                    linechartRight.style("opacity", 0.5);
+                    circlesRight.style("opacity", 0.5);
                     tooltip.style("visibility", "visible")
                         .style("left", event.pageX + 10 + "px")
                         .style("top", event.pageY - 100 + "px")
@@ -600,6 +730,10 @@
                     tooltip.style("left", event.pageX + 10 + "px")
                 })
                 .on("mouseout", function () {
+                    linechartLeft.style("stroke-width", 2);
+                    circlesLeft.attr("r", 5);
+                    linechartRight.style("opacity", 1);
+                    circlesRight.style("opacity", 1);
                     tooltip.style("visibility", "hidden")
                 });
 
@@ -607,16 +741,20 @@
             var linechartRight = svg.append("path")
                 .attr("class", "line")
                 .attr("fill", "none")
-                .attr("stroke", "#EF476F")
+                .attr("stroke", colorCodes[1])
                 .style("stroke-width", 2)
                 .attr("d", valuelineRight(avgViewersData))
                 .on("mouseover", function () {
                     linechartRight.style("stroke-width", 4);
                     circlesRight.attr("r", 6);
+                    linechartLeft.style("opacity", 0.5);
+                    circlesLeft.style("opacity", 0.5);
                 })
                 .on("mouseout", function () {
                     linechartRight.style("stroke-width", 2);
                     circlesRight.attr("r", 5);
+                    linechartLeft.style("opacity", 1);
+                    circlesLeft.style("opacity", 1);
                 });
 
 
@@ -624,13 +762,17 @@
                 .data(avgViewersData)
                 .enter()
                 .append("circle")
-                .attr("fill", "#EF476F")
+                .attr("fill", colorCodes[1])
                 .attr("stroke", "none")
                 .attr("cx", function (d, i) { return x(i) })
                 .attr("cy", function (d) { return yRight(d) })
                 .attr("r", 5)
                 /* Marc Wiedermann */
                 .on("mouseover", function (d, i) {
+                    linechartRight.style("stroke-width", 4);
+                    circlesRight.attr("r", 6);
+                    linechartLeft.style("opacity", 0.5);
+                    circlesLeft.style("opacity", 0.5);
                     tooltip.style("visibility", "visible")
                         .style("left", event.pageX + 10 + "px")
                         .style("top", event.pageY - 100 + "px")
@@ -640,8 +782,46 @@
                     tooltip.style("left", event.pageX + 10 + "px");
                 })
                 .on("mouseout", function () {
+                    linechartRight.style("stroke-width", 2);
+                    circlesRight.attr("r", 5);
+                    linechartLeft.style("opacity", 1);
+                    circlesLeft.style("opacity", 1);
                     tooltip.style("visibility", "hidden");
                 });;
+
+            /* ValarDohaeris */
+            var legend = svg.append("g")
+                .attr("class", "legend");
+
+            var legendRect = legend.selectAll("rect")
+                .data(colorCodes)
+                .enter()
+                .append("rect")
+                .attr("x", 170)
+                .attr("width", 16)
+                .attr("height", 16)
+                .attr("y", function (d, i) {
+                    return 20 + i * 20;
+                })
+                .style("fill", function (d, i) {
+                    return colorCodes[i]
+                });
+
+            var legendText = legend.selectAll("text")
+                .data(colorCodes)
+                .enter()
+                .append("text")
+                .attr("x", 160)
+                .attr("y", function (d, i) {
+                    return 20 + i * 20 + 7;
+                })
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text(function (d, i) {
+                    if (i == 0) {
+                        return "Peak viewers";
+                    } else return "Average viewers";
+                });
 
         }
 
@@ -677,26 +857,34 @@
 
         function createPieChart(year, month) {
             var color2016 = d3.scaleOrdinal()
-                .range(["#520719", "#7B0B25", "#A40E31", "#CC123D", "#EC1F4F", "#EF476F", "#F26F8E", "#F696AD", "#F9BECC", "#FDE5EA"]);
-            var color2017 = d3.scaleOrdinal()
-                .range(["#601A05", "#8F2708", "#BF340A", "#F35221", "#F56539", "#F78C6B", "#F9A389", "#FABCA9", "#FCD5C9", "#FEEEEA"]);
+                .range(["#29040C", "#520719", "#7B0B25", "#CC123D", "#EC1F4F", "#EF476F", "#F26F8E", "#F696AD", "#F9BECC", "#FDE5EA"]);
+            var color2017 = d3.scaleOrdinal() 
+                .range(["#300D03", "#601A05", "#8F2708", "#BF340A", "#EF410D", "#F56539", "#F78C6B", "#F9A389", "#FABCA9", "#FCD5C9"]);
             var color2018 = d3.scaleOrdinal()
-                .range(["#332400", "#664700", "#996B00", "#CC8F00", "#FFB300", "#FFC233", "#FFD166", "#FFDB87", "#FFE5A8", "#FFEFC8"]);
+                .range(["#332400", "#664700", "#996B00", "#CC8F00", "#FFB300", "#FFC233", "#FFD166", "#FFDE92", "#FFEBBD", "#FFF5DE"]);
             var color2019 = d3.scaleOrdinal()
-                .range(["#023D2D", "#025C44", "#037A5A", "#049971", "#05B788", "#06D6A0", "#20F9BF", "#5DFBD1", "#9AFCE2", "#D7FEF3"]);
+                .range(["#011F17", "#023D2D", "#025C44", "#037A5A", "#05B788", "#06D6A0", "#20F9BF", "#5DFBD1", "#9AFCE2", "#D7FEF3"]);
             var color2020 = d3.scaleOrdinal()
-                .range(["#052733", "#073B4C", "#094E65", "#0C627F", "#0E7698", "#118AB2", "#1CB6EA", "#5ACAF0", "#98DEF5", "#D6F2FB"]);
+                .range(["#021419", "#06313F", "#094E65", "#0D6C8B", "#118AB2", "#14A9DB", "#5ACAF0", "#83D7F3", "#ACE5F7", "#E3F6FC"]);
             var color2021 = d3.scaleOrdinal()
-                .range(["#02151B", "#04212B", "#052D3B", "#073B4C", "#0A4F67", "#1190BB", "#1FB7EA", "#57C9EF", "#8FDBF5", "#C7EDFA"]);
+                .range(["#010C10", "#031920", "#052935", "#073B4C", "#0A4F67", "#0C6583", "#0F7B9F", "#1190BB", "#14A6D7", "#1FB7EA"]);
+            var categoryData = [];
 
             d3.json("Twitch_game_data.json", function (data) {
 
-                var margin = { top: 50, bottom: 50, left: 80, right: 80 }
-                var width = 660 - margin.left - margin.right;
-                var height = 600 - margin.top - margin.bottom;
-                var outerRadius = 200;
+                var margin = { top: 5, bottom: 5, left: 10, right: 10 }
+                var width = innerWidth / 2 - margin.left - margin.right;
+                var height = 300 - margin.top - margin.bottom;
+
+                var outerRadius = 130;
                 var innerRadius = 0;
 
+                var formatComma = d3.format(",");
+                data.forEach(function (d) {
+                    if (d.Year == year && d.Month == month && d.Rank <= 10) {
+                        categoryData.push(d.Game);
+                    }
+                })
                 var arc = d3.arc()
                     .innerRadius(innerRadius)
                     .outerRadius(outerRadius);
@@ -713,12 +901,18 @@
                     .attr("width", width)
                     .attr("height", height);
 
+                /* Marc Wiedermann */
+                const tooltipPie = d3.select("body")
+                    .append("div")
+                    .attr("id", "tooltipPie")
+                    .style("visibility", "hidden");
+
                 var pieArcs = svg.selectAll("g.pie")
                     .data(pie(data))
                     .enter()
                     .append("g")
                     .attr("class", "pie")
-                    .attr("transform", "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
+                    .attr("transform", "translate(" + ((width + margin.left) / 3) + ", " + ((height + margin.top) / 2) + ")");
 
                 pieArcs.append("path")
                     .attr("opacity", 1)
@@ -746,19 +940,77 @@
                         }
                     })
                     .attr("d", arc)
-                    .on("mouseover", function (d) {
+                    .on("mouseover", function (d, i) {
                         d3.select(this)
                             .style("opacity", 0.3);
+
+                        tooltipPie.style("visibility", "visible")
+                            .style("left", event.pageX + "px")
+                            .style("top", event.pageY + "px")
+                            .html(showMonth(month) + " " + year + "." + "</br>" + d.data.Rank + ". " + d.data.Game + "<br> " + "Hours watched: " + d.data.Hours_watched + " " + "<spam>&asymp;</spam>" + "<br> " + formatComma(Math.ceil(d.data.Hours_watched / 1000000)) + " millions");
 
                     })
 
                     .on("mouseout", function (d) {
-                        d3.selectAll('path')
+                        d3.selectAll("path")
                             .style("opacity", 1);
+                        tooltipPie.style("visibility", "hidden")
                     });
+
+
+                /* ValarDohaeris */
+                var legend = svg.append("g")
+                    .attr("class", "legend");
+
+                var tenElements = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var legendRect = legend.selectAll("rect")
+                    .data(tenElements)
+                    .enter()
+                    .append("rect")
+                    .attr("x", 400)
+                    .attr("width", 16)
+                    .attr("height", 16)
+                    .attr("y", function (d, i) {
+                        return 50 + i * 20;
+                    })
+                    .style("fill", function (d, i) {
+                        switch (year) {
+                            case 2016:
+                                return color2016(i);
+                                break;
+                            case 2017:
+                                return color2017(i);
+                                break;
+                            case 2018:
+                                return color2018(i);
+                                break;
+                            case 2019:
+                                return color2019(i);
+                                break;
+                            case 2020:
+                                return color2020(i);
+                                break;
+                            case 2021:
+                                return color2021(i);
+                                break;
+                        }
+                    });
+
+                var legendText = legend.selectAll("text")
+                    .data(categoryData)
+                    .enter()
+                    .append("text")
+                    .attr("x", 420)
+                    .attr("y", function (d, i) {
+                        return 50 + i * 20 + 7;
+                    })
+                    .attr("dy", ".35em")
+                    .text(function (d, i) {
+                        return i + 1 + ". " + categoryData[i];
+                    })
+                    .style("text-anchor", "left");
             })
         }
-
     </script>
 </body>
 
